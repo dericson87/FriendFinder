@@ -8,13 +8,13 @@ This is a compatibility-based "FriendFinder" application, that will take in resu
 Express is used to handle the routing. 
 
 ### Home page
-![image](FriendFinder/Screen Shot 2019-03-21 at 11.51.51 PM.png)
+![image](home.png)
 
 ### JSON formatted raw data
-![image](.png)
+![image](json.png)
 
 ### Survey
-![image](.png)
+![image](survey.png)
 
 ### Results
-![image](.png)
+![image](result.png)
