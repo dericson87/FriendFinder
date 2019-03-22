@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FriendFinder - Survey</title>
+</head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" isntegrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<link rel="stylesheet" content-type="text/css" href="./css/style.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+<body>
+
+	<div id="myModal" class="modal">
+
+	  <div class="modal-content">
+	    <span class="close">&times;</span>
+	    <h1>Congratulations, your new celebrity best friend is.....<h1>
+	    <h2 class='name'></h2>
+	    <img class='image' width="700px">
+	  </div>
+
+	</div>
+
+	<hr>
+	<h1 class="container">Survey Questions</h1>
+	<hr>
+
+	<div class="container">
+		<div class='input-title'>Name:</div>
+		<input type="text" class="form-control your-name" placeholder="Jon Snow">
+		<br>
+		<div class='input-title'>Photo:</div>
+		<input type="text" class="form-control your-photo" placeholder="URL please">
+
+		<div class='question'>
+			<h3 class='questioning'>1. How much do you like beer?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>2. How much do you like to party?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>3. How much do you like sports?</h3>
+				<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>4. How much do you like video games?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>5. How much do you like making videos?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>6. How much do you like to draw?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>7. How excited do you get about new technology?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>8. How comfortable are you in leadership positions?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>		
+
+		<div class='question'>
+			<h3 class='questioning'>9. How much do you like hot wings?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+
+		<div class='question'>
+			<h3 class='questioning'>10. How important is it to you that we put a man on Mars?</h3>
+			<div class="slidecontainer">
+			  <span>1</span><input type="range" min="1" max="5" value="3" class="slider"><span>5</span>
+			  <span>Value: </span><span class="numberDisplay">3</span>
+			</div>
+		</div>
+		<button type="button" class="btn btn-primary find">Submit</button>
+	</div>
+       <hr>
+    <footer class="footer">
+      <div class="container">
+        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/dericson87/FriendFinder">GitHub Repo</a>| <a href="/">Home</a></p>
+      </div>
+    </footer>
+
+  </div>
+
+
+<script type="text/javascript">
+
+	$('.slider').change(function(){
+		$(this).siblings('.numberDisplay').html($(this).val());
+		console.log('yay');
+	});
+
+	$('.find').on('click', function(){
+		var friendSurvey = { 
+			name: $('.your-name').val().trim(),
+			photo: $('.your-photo').val().trim(),
+			scores:[] 
+		};
+		$('.slider').each(function(){
+			friendSurvey.scores.push(parseInt($(this).val()));
+		});
+		console.log(friendSurvey);
+		$.post('/api/friends', friendSurvey, function(data){
+			console.log(data);
+			$('.name').html(data.name);
+			$('.image').attr('src',data.photo);
+			$('#myModal').css('display','block');
+		});
+	});
+	$('.modal-content').on('click','.close',function(){
+		$('#myModal').css('display','none');
+	})
+</script>
+</body>
+</html>
